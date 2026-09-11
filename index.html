@@ -39,15 +39,18 @@
   --road-fill:#24404A;--road-edge:#152B33;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);}
 *{box-sizing:border-box}
+html{overflow-x:clip;width:100%}
 body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-b);font-size:calc(15px * var(--ts));
-  line-height:1.6;-webkit-text-size-adjust:100%;overscroll-behavior:none}
+  line-height:1.6;-webkit-text-size-adjust:100%;overscroll-behavior:none;
+  overflow-x:clip;width:100%;max-width:100%}
+img,canvas,svg,video{max-width:100%}
 button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
-.app{display:flex;flex-direction:column;min-height:100dvh}
+.app{display:flex;flex-direction:column;min-height:100dvh;width:100%;max-width:100%;overflow-x:clip}
 @media(min-width:900px){.app{height:100dvh;overflow:hidden}}
 .top{display:flex;align-items:center;gap:10px;padding:9px 18px;background:var(--surface);
   border-bottom:1px solid var(--line);flex:none;position:sticky;top:0;z-index:80}
-.brand{display:flex;align-items:baseline;gap:9px;margin-right:auto;min-width:0}
+.brand{display:flex;align-items:baseline;gap:9px;margin-right:auto;min-width:0;overflow:hidden}
 .brand b{font-family:var(--font-d);font-weight:700;font-size:calc(18px * var(--ts));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand span{font-size:calc(11px * var(--ts));color:var(--muted);letter-spacing:.13em;white-space:nowrap}
 @media(max-width:700px){.brand span{display:none}.brand b{font-size:calc(16px * var(--ts))}.top{padding:8px 13px;gap:7px}}
@@ -77,7 +80,7 @@ h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
   border-radius:11px;background:var(--surface);padding-left:12px}
 .panel .searchbox:focus-within{border-color:var(--sea)}
 .kwicon{color:var(--muted);flex:none}
-.panel .kw{border:0;background:none;min-height:46px;padding:0 10px 0 0}
+.panel .kw{border:0;background:none;min-height:46px;padding:0 10px 0 0;width:auto;flex:1;min-width:0}
 .panel .kw:focus{outline:none}
 .more{border:0}
 .more>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;
@@ -304,10 +307,10 @@ h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
 .form{display:grid;grid-template-columns:1fr 1fr;gap:9px}
 .form label{display:flex;flex-direction:column;gap:4px;font-size:calc(11.5px * var(--ts));color:var(--muted);font-weight:700;letter-spacing:.06em}
 .form input,.form select{border:1.5px solid var(--line);background:var(--surface);border-radius:9px;
-  min-height:42px;padding:0 11px;font-size:calc(14px * var(--ts));width:100%}
+  min-height:42px;padding:0 11px;font-size:calc(14px * var(--ts));width:100%;min-width:0;max-width:100%}
 .form .go{min-height:48px;font-size:calc(15px * var(--ts))}
 .form .wide{grid-column:1/-1}
-.searchbox{position:relative}
+.searchbox{position:relative;min-width:0;max-width:100%}
 .suggest{position:absolute;left:0;right:0;top:calc(100% + 4px);z-index:5;background:var(--surface);
   border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);max-height:230px;overflow-y:auto;display:none}
 .suggest.on{display:block}
@@ -376,8 +379,7 @@ h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
 .hbtn:hover{background:var(--sea-wash);color:var(--sea-ink)}
 .hbtn:disabled{opacity:.35}
 .hbtn.wide{padding:0 12px}
-#lang-cur{display:inline-block;width:calc(72px * var(--ts));text-align:left;
-  white-space:nowrap;overflow:hidden}
+#lang-cur{display:inline-block;min-width:calc(70px * var(--ts));text-align:left;white-space:nowrap}
 .hbtn[aria-expanded="true"]{background:var(--sea);border-color:var(--sea);color:#fff}
 .tsval{font-size:calc(11px * var(--ts));color:var(--muted);min-width:4ch;text-align:center;
   font-variant-numeric:tabular-nums}
@@ -404,7 +406,8 @@ main{flex:1;min-height:0;display:flex;flex-direction:column}
   border-radius:14px;padding:6px 6px 6px 14px;box-shadow:var(--shadow)}
 .hs-row:focus-within{border-color:var(--sea)}
 .hs-row>svg{color:var(--muted);flex:none}
-.hs-row input{flex:1;min-width:0;border:0;background:none;min-height:46px;font-size:calc(15px * var(--ts))}
+.hs-row input{flex:1 1 0;min-width:0;width:100%;border:0;background:none;min-height:46px;
+  font-size:calc(15px * var(--ts))}
 .hs-row input:focus{outline:none}
 .hs-note{margin:2px 0 0;font-size:calc(11.5px * var(--ts));color:var(--muted);text-align:center}
 .cards{list-style:none;margin:0;padding:0;width:100%;max-width:980px;
@@ -471,7 +474,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column}
 .qn{margin-right:11px;color:var(--sea);font-size:calc(12px * var(--ts));font-variant-numeric:tabular-nums}
 .qhint{margin:-4px 0 10px;color:var(--muted);font-size:calc(12px * var(--ts));line-height:1.6}
 .qfield select,.qfield input[type="date"],.qfield input[type="time"],.qfield input[type="text"]{
-  width:100%;min-height:50px;border:1.5px solid var(--line);border-radius:10px;
+  width:100%;min-width:0;max-width:100%;min-height:50px;border:1.5px solid var(--line);border-radius:10px;
   background:var(--surface-2);padding:0 13px;font:inherit;font-size:calc(14.5px * var(--ts));color:var(--ink)}
 .qfield select:focus,.qfield input:focus{outline:none;border-color:var(--sea);background:var(--surface)}
 .qrow{display:flex;align-items:center;gap:10px}
@@ -1258,6 +1261,7 @@ function setTs(v){
   ['#ts-down','#ts-down2'].forEach(s=>{ const e=$(s); if(e) e.disabled = ts<=TS[0]; });
   ['#ts-up','#ts-up2'].forEach(s=>{ const e=$(s); if(e) e.disabled = ts>=TS[TS.length-1]; });
   try{ localStorage.setItem('otc.ts', ts); }catch(e){}
+  requestAnimationFrame(fitLang);
   document.dispatchEvent(new Event('tschange'));
 }
 const stepTs = d => { const i=TS.indexOf(ts); setTs(TS[Math.min(TS.length-1, Math.max(0, (i<0?1:i)+d))]); };
@@ -1295,8 +1299,22 @@ function box(id, btn, on){
   }
 }
 
+/* ---- 言語ボタンの幅 ----
+   巡回する語（言語 / Language / 语言 / 언어）のうち、いちばん広いものに合わせて
+   固定する。文字サイズを変えても計り直すので、切り替えで画面が動かない。 */
+function fitLang(){
+  const el = $('#lang-cur'); if(!el) return;
+  const cs = getComputedStyle(el);
+  const c = (fitLang._c || (fitLang._c = document.createElement('canvas').getContext('2d')));
+  c.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+  let w = 0;
+  for(const k in I18N.LANGWORD) w = Math.max(w, c.measureText(I18N.LANGWORD[k]).width);
+  el.style.width = Math.ceil(w + 3) + 'px';
+}
+
 /* ---- 言語の選択肢 ---- */
 function buildLangs(){
+  fitLang();
   const html = I18N.LANGS.map(([code,label])=>
     `<button type="button" class="langopt" role="radio" data-lang="${code}" lang="${code}"
        aria-checked="${code===I18N.lang}">${label}<span class="tick" aria-hidden="true">&#10003;</span></button>`).join('');
@@ -3193,7 +3211,7 @@ function ensureEdgeBox(g){
     grid: per.map(a=>makeGrid(a,mnla,mxla,mnlo,mxlo)),
     stamp: new Int32Array(n), buf: [], bk: [[],[],[],[],[],[]]};
 }
-let mvView=null, mvDrag=null, mvPinch=null;
+let mvView=null;
 function fitMap(it){
   let mnla=Infinity,mxla=-Infinity,mnlo=Infinity,mxlo=-Infinity;
   const push=(la,lo)=>{ if(la<mnla)mnla=la; if(la>mxla)mxla=la; if(lo<mnlo)mnlo=lo; if(lo>mxlo)mxlo=lo; };
@@ -3409,7 +3427,7 @@ function mvZoom(f, cx, cy){
 }
 
 /* ---- メイン画面の地図 ------------------------------------------------ */
-let ovShown=null, ovView=null, ovDrag=null;
+let ovShown=null, ovView=null;
 
 /* 沖縄県は与那国から本島まで500km以上あるので、全部を入れると点の集まりにしか
    見えない。候補が集まっている範囲（5〜95パーセンタイル）に合わせて、離れた
@@ -3530,7 +3548,6 @@ function ovZoom(f, cx, cy){
   drawOverview();
 }
 function overviewClick(ev){
-  if(ovDrag&&ovDrag.moved) return;
   if(!ovShown||!ovShown.rows) return;
   const r=$('#omap').getBoundingClientRect();
   const x=ev.clientX-r.left, y=ev.clientY-r.top;
@@ -3623,25 +3640,59 @@ function ovBtnZoom(f){
   ovZoom(f, b.width/2, b.height/2);
 }
 $('#clear-top').addEventListener('click', clearAll);
+/* ---- 地図の指・マウス操作 ------------------------------------------------
+   1本で移動、2本で拡大縮小（ピンチ）。両方の地図で同じ操作にする。
+   指の間隔の変化分をそのまま倍率にし、2本の中点を動かない点として拡大する。 */
+function mapGesture(cv, view, zoom, redraw){
+  const P = new Map();
+  let last = null;
+  const st = { moved:false };
+  const pos = e => { const r=cv.getBoundingClientRect();
+    return { x:e.clientX-r.left, y:e.clientY-r.top }; };
+  const snap = () => {
+    const a = [...P.values()];
+    if(!a.length) return null;
+    if(a.length === 1) return { x:a[0].x, y:a[0].y, d:0 };
+    return { x:(a[0].x+a[1].x)/2, y:(a[0].y+a[1].y)/2,
+             d:Math.hypot(a[0].x-a[1].x, a[0].y-a[1].y) };
+  };
+  cv.addEventListener('pointerdown', e=>{
+    if(!view() || P.size >= 2) return;
+    try{ cv.setPointerCapture(e.pointerId); }catch(err){}
+    P.set(e.pointerId, pos(e));
+    last = snap(); st.moved = false;
+  });
+  cv.addEventListener('pointermove', e=>{
+    if(!P.has(e.pointerId)) return;
+    P.set(e.pointerId, pos(e));
+    const now = snap(), v = view();
+    if(!now || !last || !v) return;
+    const r = cv.getBoundingClientRect(), sc = r.height/v.span;
+    const kx = Math.cos(v.cla*Math.PI/180);
+    const dx = now.x-last.x, dy = now.y-last.y;
+    if(Math.abs(dx)+Math.abs(dy) > 3) st.moved = true;
+    v.cla += dy/sc; v.clo -= dx/(kx*sc);
+    let zoomed = false;
+    if(last.d > 12 && now.d > 12){
+      const f = last.d/now.d;
+      if(Math.abs(f-1) > 0.004){ st.moved = true; zoomed = true; zoom(f, now.x, now.y); }
+    }
+    if(!zoomed) redraw();
+    last = now;
+  });
+  const up = e => { P.delete(e.pointerId); last = snap();
+    if(!P.size) setTimeout(()=>{ st.moved = false; }, 0); };
+  cv.addEventListener('pointerup', up);
+  cv.addEventListener('pointercancel', up);
+  cv.addEventListener('lostpointercapture', up);
+  return st;
+}
 const omap=$('#omap');
-omap.addEventListener('click', overviewClick);
+const ovGes = mapGesture(omap, ()=>ovView, ovZoom, drawOverviewSoon);
+omap.addEventListener('click', e=>{ if(!ovGes.moved) overviewClick(e); });
 omap.addEventListener('wheel', e=>{ e.preventDefault();
   const r=omap.getBoundingClientRect();
   ovZoom(e.deltaY>0?1.25:0.8, e.clientX-r.left, e.clientY-r.top); }, {passive:false});
-omap.addEventListener('pointerdown', e=>{
-  ovDrag={x:e.clientX,y:e.clientY,cla:ovView.cla,clo:ovView.clo,moved:false};
-  omap.setPointerCapture(e.pointerId); });
-omap.addEventListener('pointermove', e=>{
-  if(!ovDrag) return;
-  const dx=e.clientX-ovDrag.x, dy=e.clientY-ovDrag.y;
-  if(Math.abs(dx)+Math.abs(dy)>4) ovDrag.moved=true;
-  const r=omap.getBoundingClientRect(), sc=r.height/ovView.span;
-  const kx=Math.cos(ovView.cla*Math.PI/180);
-  ovView.cla=ovDrag.cla+dy/sc; ovView.clo=ovDrag.clo-dx/(kx*sc);
-  drawOverviewSoon(); });
-const endDrag=()=>{ setTimeout(()=>{ovDrag=null;},0); };
-omap.addEventListener('pointerup', endDrag);
-omap.addEventListener('pointercancel', endDrag);
 let kwt;
 $('#kw').addEventListener('input', e=>{
   clearTimeout(kwt); const v=e.target.value;
@@ -3653,20 +3704,7 @@ const rmap=$('#map');
 rmap.addEventListener('wheel', e=>{ e.preventDefault();
   const r=rmap.getBoundingClientRect();
   mvZoom(e.deltaY>0?1.25:0.8, e.clientX-r.left, e.clientY-r.top); }, {passive:false});
-rmap.addEventListener('pointerdown', e=>{
-  if(!mvView) return;
-  mvDrag={x:e.clientX,y:e.clientY,cla:mvView.cla,clo:mvView.clo};
-  rmap.setPointerCapture(e.pointerId); });
-rmap.addEventListener('pointermove', e=>{
-  if(!mvDrag||!mvView) return;
-  const r=rmap.getBoundingClientRect(), sc=r.height/mvView.span;
-  const kx=Math.cos(mvView.cla*Math.PI/180);
-  mvView.cla=mvDrag.cla+(e.clientY-mvDrag.y)/sc;
-  mvView.clo=mvDrag.clo-(e.clientX-mvDrag.x)/(kx*sc);
-  drawMapSoon(); });
-const endMv=()=>{ mvDrag=null; };
-rmap.addEventListener('pointerup', endMv);
-rmap.addEventListener('pointercancel', endMv);
+mapGesture(rmap, ()=>mvView, mvZoom, drawMapSoon);
 $('#map-in').addEventListener('click', ()=>{ const r=rmap.getBoundingClientRect(); mvZoom(0.65, r.width/2, r.height/2); });
 $('#map-out').addEventListener('click', ()=>{ const r=rmap.getBoundingClientRect(); mvZoom(1.55, r.width/2, r.height/2); });
 $('#map-fit').addEventListener('click', ()=>{ mvView=null; drawMap(); });
