@@ -46,8 +46,8 @@ body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-b
 img,canvas,svg,video{max-width:100%}
 button,input,select{font:inherit;color:inherit}button{cursor:pointer}
 h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
-.app{display:flex;flex-direction:column;min-height:100dvh;width:100%;max-width:100%;overflow-x:clip}
-@media(min-width:900px){.app{height:100dvh;overflow:hidden}}
+.app{position:fixed;inset:0;display:flex;flex-direction:column;
+  height:100dvh;height:100svh;width:100%;max-width:100%;overflow:hidden}
 .top{display:flex;align-items:center;gap:10px;padding:9px 18px;background:var(--surface);
   border-bottom:1px solid var(--line);flex:none;position:sticky;top:0;z-index:80}
 .brand{display:flex;align-items:baseline;gap:9px;margin-right:auto;min-width:0;overflow:hidden}
@@ -70,7 +70,7 @@ h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
   display:flex;flex-direction:column;min-height:0}
 .ptop{flex:none;display:flex;flex-direction:column;gap:8px;padding:11px 15px 9px}
 @media(min-width:900px){.panel{overflow-y:auto;overscroll-behavior:contain}}
-@media(max-width:899px){.panel{overflow:visible}}
+@media(max-width:899px){.panel{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}}
 /* きぶんは1行のまま横に流す。縦を食わない */
 #f-mood{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;
   scroll-snap-type:x proximity}
@@ -274,15 +274,22 @@ h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
 .qrwrap b{display:block;font-family:var(--font-d);color:var(--ink);font-size:calc(14px * var(--ts));margin-bottom:3px}
 
 /* ---------- ルート画面 ---------- */
-.routeview{position:fixed;inset:var(--hdr) 0 0 0;z-index:60;background:var(--ground);display:none;flex-direction:column}
+.routeview{position:absolute;inset:var(--hdr) 0 0 0;z-index:60;background:var(--ground);
+  display:none;flex-direction:column;overflow:hidden}
 .routeview.on{display:flex}
 .rv-top{display:flex;align-items:center;gap:10px;padding:10px 18px;background:var(--surface);
   border-bottom:1px solid var(--line);flex:none}
+@media(max-width:899px){
+  .rv-top{padding:7px 13px;gap:8px}
+  .rv-top h2{font-size:calc(15px * var(--ts))}
+  .rv-top .tbtn{height:36px;padding:0 10px}
+}
 .rv-top h2{font-size:calc(17px * var(--ts));margin-right:auto}
-.rv-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto}
+.rv-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;
+  overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .rv-left{padding:16px 18px 26px;display:flex;flex-direction:column;gap:14px;background:var(--surface)}
-.rv-right{position:relative;background:var(--surface-2);height:46dvh;flex:none;order:-1;
-  border-bottom:1px solid var(--line)}
+.rv-right{position:sticky;top:0;z-index:2;background:var(--surface-2);height:min(40dvh,340px);
+  flex:none;order:-1;border-bottom:1px solid var(--line)}
 @media(min-width:960px){
   .rv-body{display:grid;grid-template-columns:minmax(360px,42ch) 1fr;overflow:hidden}
   .rv-left{overflow-y:auto;border-right:1px solid var(--line)}
@@ -385,12 +392,12 @@ h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
   font-variant-numeric:tabular-nums}
 .tsval.big{font-size:calc(16px * var(--ts));font-weight:700;color:var(--ink);min-width:5ch}
 .tsrow{display:flex;align-items:center;gap:10px}
-main{flex:1;min-height:0;display:flex;flex-direction:column}
-.view{display:none;flex:1;min-height:0;flex-direction:column}
+main{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.view{display:none;flex:1;min-height:0;flex-direction:column;overflow:hidden}
 .view.on{display:flex}
 @media(min-width:900px){.view.on#v-pick{display:flex}}
 
-#v-home{overflow-y:auto;align-items:center;justify-content:safe center;padding:24px 20px 44px}
+#v-home{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;align-items:center;justify-content:safe center;padding:24px 20px 44px}
 .view h1:focus,.view h1:focus-visible{outline:none}
 .hero{width:100%;max-width:760px;text-align:center;padding:min(7vh,54px) 0 26px}
 .hello{font-family:var(--font-d);font-weight:700;font-size:calc(38px * var(--ts));line-height:1.25;
@@ -429,8 +436,8 @@ main{flex:1;min-height:0;display:flex;flex-direction:column}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .c-a{color:#F0929F}
   :root:not([data-theme="light"]) .c-b{color:#8FB6EE}:root:not([data-theme="light"]) .c-c{color:#7ED2AC}}
 
-.sheet.mini{max-width:min(400px,92vw)}
-@media(min-width:760px){.sheet.mini{width:min(400px,92vw)}}
+@media(min-width:760px){.sheet.mini{width:min(400px,92vw);max-width:min(400px,92vw)}}
+@media(max-width:759px){.sheet.mini{left:0;right:0;width:auto;max-width:none}}
 .swap{transition:opacity .22s ease, transform .22s ease}
 .swap.out{opacity:0;transform:translateY(-5px)}
 @media(prefers-reduced-motion:reduce){.swap{transition:none}.swap.out{transform:none}}
@@ -459,7 +466,7 @@ main{flex:1;min-height:0;display:flex;flex-direction:column}
 .langopt[aria-checked="true"] .tick{opacity:1}
 
 /* ---- 質問に答えて決める（たびさき診断） ---- */
-#v-ask{overflow-y:auto}
+#v-ask{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .ask{width:100%;max-width:1180px;margin:0 auto;padding:22px 22px 48px}
 .ask-intro{margin-bottom:22px}
 .eyebrow{margin:0 0 6px;color:var(--sea);letter-spacing:.14em;font-size:calc(11px * var(--ts));font-weight:700}
@@ -1373,6 +1380,12 @@ function init(){
   I18N.set(I18N.lang);
   buildLangs();
   rotate();
+  // 画面の枠を固定したので、キーボードが出たとき入力欄が隠れないよう寄せる
+  document.addEventListener('focusin', e=>{
+    const el = e.target;
+    if(!el.matches || !el.matches('input,select,textarea')) return;
+    setTimeout(()=>{ try{ el.scrollIntoView({block:'center', behavior:'smooth'}); }catch(err){} }, 260);
+  });
   $('#go-home').addEventListener('click', ()=>{ hooks.leave && hooks.leave(); go('home'); });
   $('#ts-up').addEventListener('click', ()=>stepTs(1));
   $('#ts-down').addEventListener('click', ()=>stepTs(-1));
