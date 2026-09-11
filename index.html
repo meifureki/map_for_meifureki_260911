@@ -137,7 +137,8 @@ h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
 @media(min-width:900px){.results{overflow-y:auto}}
 .results{position:relative;min-height:0;display:flex}
 .overview{position:relative;flex:1;min-height:0;background:var(--surface-2)}
-@media(max-width:899px){.results{height:min(42dvh,360px);flex:none;border-bottom:1px solid var(--line)}}
+@media(max-width:899px){.results{height:min(42dvh,360px);flex:none;
+  border-bottom:2px solid var(--line);box-shadow:0 3px 10px rgba(11,42,49,.10);z-index:1}}
 /* 横向きのスマホは地図を低くして一覧を出す */
 @media(max-width:899px) and (orientation:landscape) and (max-height:560px){
   .results{height:min(52dvh,240px)}
@@ -285,15 +286,16 @@ h1,h2,h3{font-family:var(--font-d);margin:0;text-wrap:balance}
   .rv-top .tbtn{height:36px;padding:0 10px}
 }
 .rv-top h2{font-size:calc(17px * var(--ts));margin-right:auto}
-.rv-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow-y:auto;
-  overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
-.rv-left{padding:16px 18px 26px;display:flex;flex-direction:column;gap:14px;background:var(--surface)}
-.rv-right{position:sticky;top:0;z-index:2;background:var(--surface-2);height:min(40dvh,340px);
-  flex:none;order:-1;border-bottom:1px solid var(--line)}
+.rv-body{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.rv-left{padding:16px 18px 26px;display:flex;flex-direction:column;gap:14px;background:var(--surface);
+  flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.rv-right{position:relative;background:var(--surface-2);height:min(40dvh,340px);
+  flex:none;order:-1;border-bottom:2px solid var(--line);
+  box-shadow:0 3px 10px rgba(11,42,49,.10)}
 @media(min-width:960px){
   .rv-body{display:grid;grid-template-columns:minmax(360px,42ch) 1fr;overflow:hidden}
   .rv-left{overflow-y:auto;border-right:1px solid var(--line)}
-  .rv-right{height:auto;order:0;border-bottom:0}
+  .rv-right{height:auto;order:0;border-bottom:0;box-shadow:none}
 }
 #map{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
 #map:active{cursor:grabbing}
@@ -441,6 +443,14 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
 .swap{transition:opacity .22s ease, transform .22s ease}
 .swap.out{opacity:0;transform:translateY(-5px)}
 @media(prefers-reduced-motion:reduce){.swap{transition:none}.swap.out{transform:none}}
+.qrbig{display:grid;place-items:center;padding:6px 0 2px}
+.qrbig canvas{width:min(260px,68vw);height:auto;background:#fff;border-radius:12px;
+  padding:10px;box-shadow:var(--shadow)}
+.qrurl{margin:12px 0 0;text-align:center;font-size:calc(12.5px * var(--ts));
+  color:var(--sea);font-weight:700;word-break:break-all}
+#qr-btn .hbtn-t{font-size:calc(12.5px * var(--ts))}
+@media(max-width:1100px){#qr-btn .hbtn-t{display:none}}
+@media(max-width:820px){#qr-btn{display:none}}
 .langlist{display:flex;flex-direction:column;gap:6px}
 @media(max-width:820px){
   .acc{display:none}
@@ -549,6 +559,10 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
       <button class="hbtn wide" id="lang-btn" data-i18n-al="a11y.lang" aria-label="表示言語を変える" aria-haspopup="dialog">
         <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg>
         <span id="lang-cur" class="swap">言語</span>
+      </button>
+      <button class="hbtn" id="qr-btn" data-i18n-al="a11y.qr" aria-label="スマホで開くQRコード" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" fill="currentColor"><path d="M3 3h8v8H3V3zm2 2v4h4V5H5zm8-2h8v8h-8V3zm2 2v4h4V5h-4zM3 13h8v8H3v-8zm2 2v4h4v-4H5zm8-2h3v3h-3v-3zm5 0h3v3h-3v-3zm-5 5h3v3h-3v-3zm5 0h3v3h-3v-3z"/></svg>
+        <span class="hbtn-t" data-i18n="qr.btn">スマホで開く</span>
       </button>
       <button class="hbtn" id="menu-btn" data-i18n-al="a11y.menu" aria-label="設定と出典" aria-haspopup="dialog">&#9776;</button>
     </div>
@@ -766,6 +780,17 @@ main{flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
   <div class="body">
     <div class="langlist" id="langlist" role="radiogroup" aria-labelledby="langbox-t"></div>
     <p class="hint2" data-i18n="menu.langNote">観光地の名前や時刻表の案内は、出典のまま日本語で表示します。</p>
+  </div>
+</aside>
+
+<aside class="sheet mini" id="qrbox" role="dialog" aria-modal="true" aria-labelledby="qrbox-t" hidden>
+  <header><h2 id="qrbox-t" data-i18n="qr.title">スマホで開く</h2>
+    <button class="close" id="qrbox-close" data-i18n-al="a11y.close" aria-label="閉じる">&#10005;</button></header>
+  <div class="body">
+    <p class="hint2" data-i18n="qr.lead">スマートフォンのカメラでこのQRコードを読み取ると、いま見ているページがそのまま開きます。</p>
+    <div class="qrbig"><canvas id="qr-site" aria-label="このページのQRコード"></canvas></div>
+    <p class="qrurl" id="qr-url"></p>
+    <p class="hint2" id="qr-note"></p>
   </div>
 </aside>
 
@@ -1057,6 +1082,7 @@ const HELLO = {
 };
 const D = {
 ja:{
+ 'qr.btn':'スマホで開く','qr.title':'スマホで開く','qr.lead':'スマートフォンのカメラでこのQRコードを読み取ると、いま見ているページがそのまま開きます。','qr.note':'ページの容量は約7.4MB（転送時 約4.3MB）です。Wi-Fi での読み込みをおすすめします。','qr.local':'このファイルはパソコンの中にあるため、QRコードからは開けません。公開したURLで開くとQRコードが使えます。','a11y.qr':'スマホで開くQRコードを表示',
  'ask.h1':'行きたい旅を、選んでみよう。','ask.lead':'答えられるところだけで大丈夫です。未回答は、こちらで決めます。','ask.qt':'旅の希望','ask.run':'結果を見る →','ask.answered':'答えた項目','ask.chosen':'選んだ内容','ask.none':'条件に合う場所がありませんでした',
  'sum.time':'移動の合計','sum.dist':'移動する距離','sum.fare':'運賃','sum.fareEst':'運賃（推定を含む）','sum.end':'終了予定','unit.d':'日','unit.h':'時間','unit.m':'分',
  'route.calc':'順番を最適化して計算','route.more':'くわしい条件',
@@ -1096,6 +1122,7 @@ ja:{
  'legend.lm':'空港・港・役所など','legend.spot':'候補','legend.pick':'しおり',
 },
 en:{
+ 'qr.btn':'Open on phone','qr.title':'Open on your phone','qr.lead':'Scan this code with your phone camera to open this page there.','qr.note':'The page is about 7.4MB (≈4.3MB transferred). Wi-Fi is recommended.','qr.local':'This file is on your computer, so the code cannot open it. Publish it to a URL first.','a11y.qr':'Show the QR code for phones',
  'ask.h1':'Choose the trip you want.','ask.lead':'Answer only what you can. We decide the rest.','ask.qt':'Your wishes','ask.run':'See the result →','ask.answered':'Answered','ask.chosen':'Your selection','ask.none':'Nothing matched those conditions',
  'sum.time':'Travel time','sum.dist':'Distance','sum.fare':'Fare','sum.fareEst':'Fare (incl. estimates)','sum.end':'Finish','unit.d':' d','unit.h':' h','unit.m':' min',
  'route.calc':'Optimize the order','route.more':'More options',
@@ -1135,6 +1162,7 @@ en:{
  'legend.lm':'Airports, ports, city halls','legend.spot':'Candidates','legend.pick':'Your list',
 },
 zh:{
+ 'qr.btn':'用手机打开','qr.title':'用手机打开','qr.lead':'用手机相机扫描此二维码，即可在手机上打开当前页面。','qr.note':'页面约 7.4MB（传输约 4.3MB），建议使用 Wi-Fi。','qr.local':'此文件在电脑本地，无法通过二维码打开。请先发布到网址。','a11y.qr':'显示手机用二维码',
  'ask.h1':'选出你想要的旅程。','ask.lead':'只回答能回答的即可，其余由我们决定。','ask.qt':'旅行的希望','ask.run':'查看结果 →','ask.answered':'已回答','ask.chosen':'已选内容','ask.none':'没有符合条件的地方',
  'sum.time':'移动合计','sum.dist':'移动距离','sum.fare':'车费','sum.fareEst':'车费（含推算）','sum.end':'预计结束','unit.d':'天','unit.h':'小时','unit.m':'分',
  'route.calc':'优化顺序并计算','route.more':'详细条件',
@@ -1174,6 +1202,7 @@ zh:{
  'legend.lm':'机场・港口・政府机关','legend.spot':'候选','legend.pick':'清单',
 },
 ko:{
+ 'qr.btn':'휴대폰에서 열기','qr.title':'휴대폰에서 열기','qr.lead':'휴대폰 카메라로 이 QR 코드를 읽으면 지금 보고 있는 페이지가 그대로 열립니다.','qr.note':'페이지 용량은 약 7.4MB(전송 시 약 4.3MB)입니다. Wi-Fi를 권장합니다.','qr.local':'이 파일은 컴퓨터 안에 있어 QR로 열 수 없습니다. 먼저 URL로 공개하세요.','a11y.qr':'휴대폰용 QR 코드 표시',
  'ask.h1':'가고 싶은 여행을 골라 보세요.','ask.lead':'답할 수 있는 것만으로 충분합니다. 나머지는 저희가 정합니다.','ask.qt':'여행의 희망','ask.run':'결과 보기 →','ask.answered':'답한 항목','ask.chosen':'선택한 내용','ask.none':'조건에 맞는 곳이 없었습니다',
  'sum.time':'이동 합계','sum.dist':'이동 거리','sum.fare':'요금','sum.fareEst':'요금(추정 포함)','sum.end':'종료 예정','unit.d':'일','unit.h':'시간','unit.m':'분',
  'route.calc':'순서를 최적화해 계산','route.more':'자세한 조건',
@@ -3644,6 +3673,19 @@ $('#list').addEventListener('click', e=>{
   if(e.target.closest('#more-rows')){ shown += 60; render(false); }
 });
 $('#clear').addEventListener('click', clearAll);
+/* このページ自体を開くQRコード。配布URLに置けばそのまま読み取れる。 */
+function showSiteQR(){
+  const url = location.href.replace(/#.*$/,'');
+  const local = !/^https?:$/.test(location.protocol);
+  $('#qr-url').textContent = local ? '' : url.replace(/^https?:\/\//,'');
+  $('#qr-note').textContent = I18N.t(local ? 'qr.local' : 'qr.note');
+  const cv = $('#qr-site');
+  cv.hidden = local;
+  if(!local) drawQR(cv, url);
+  UI.box('#qrbox', $('#qr-btn'), true);
+}
+$('#qr-btn').addEventListener('click', showSiteQR);
+$('#qrbox-close').addEventListener('click', ()=>UI.box('#qrbox', null, false));
 $('#foot-more').addEventListener('click', ()=>UI.box('#menubox', $('#menu-btn'), true));
 $('#omap-in').addEventListener('click', ()=>ovBtnZoom(1/1.6));
 $('#omap-out').addEventListener('click', ()=>ovBtnZoom(1.6));
@@ -3722,6 +3764,17 @@ $('#map-in').addEventListener('click', ()=>{ const r=rmap.getBoundingClientRect(
 $('#map-out').addEventListener('click', ()=>{ const r=rmap.getBoundingClientRect(); mvZoom(1.55, r.width/2, r.height/2); });
 $('#map-fit').addEventListener('click', ()=>{ mvView=null; drawMap(); });
 
+/* 端末の回転・アドレスバーの出入り・レイアウトの変化で入れ物の大きさが
+   変わったら描き直す。古い寸法のまま描かれて余白がずれるのを防ぐ。 */
+try{
+  let ro;
+  const redraw = ()=>{ clearTimeout(ro); ro=setTimeout(()=>{ baseReset();
+    if($('#routeview').classList.contains('on')) drawMap();
+    drawOverview(); }, 80); };
+  const obs = new ResizeObserver(redraw);
+  obs.observe($('#omap').parentElement);
+  obs.observe($('#map').parentElement);
+}catch(e){}
 let rz; window.addEventListener('resize', ()=>{ clearTimeout(rz); rz=setTimeout(()=>{
   baseReset();
   if(S.route&&$('#routeview').classList.contains('on')) drawMap(S.route.it,S.route.places,S.route.order);
